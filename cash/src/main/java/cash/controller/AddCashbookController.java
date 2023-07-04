@@ -61,7 +61,7 @@ public class AddCashbookController extends HttpServlet {
 		int cashbookNo = cashbookDao.insertCashbook(cashbook); // insert 후 키값 저장
 		if(cashbookNo == 0) { // 입력 실패시
 			System.out.println("cashbook insert 실패! <- AddCashbookController");
-			response.sendRedirect(request.getContextPath() + "/addCashbook?cashbookDate=" + cashbookDate);
+			response.sendRedirect(request.getContextPath() + "/addCashbook?cashbookDate=" + cashbookDate + "&success=false");
 			return;
 		}
 		System.out.println("cashbook insert 성공! <- AddCashbookController");
@@ -91,7 +91,7 @@ public class AddCashbookController extends HttpServlet {
 		
 		// 모든 작업 완료 후 상세 페이지로 이동
 		response.sendRedirect(request.getContextPath() + "/calendarOne?cashbookDate=" + cashbookDate + "&success=true");
-		// 입력 완료 메세지를 띄어주기 위해 success값 같이 보내기
+		// 추가 완료 메세지를 띄어주기 위해 success값 같이 보내기
 	}
 
 }

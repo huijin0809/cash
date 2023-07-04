@@ -47,11 +47,11 @@ public class RemoveMemberController extends HttpServlet {
 		
 		if(row == 0) { // 탈퇴 실패
 			System.out.println("회원탈퇴 실패");
-			response.sendRedirect(request.getContextPath() + "/removeMember");
+			response.sendRedirect(request.getContextPath() + "/removeMember?success=false");
 		} else if(row == 1) { // 탈퇴 성공
 			System.out.println("회원탈퇴 성공");
 			session.invalidate(); // 세션값 초기화
-			response.sendRedirect(request.getContextPath() + "/login");
+			response.sendRedirect(request.getContextPath() + "/login?success=delTrue");
 		} else { // 그 외 에러 발생
 			System.out.println("removeMember error!");
 		}

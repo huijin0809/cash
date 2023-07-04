@@ -9,6 +9,8 @@
 	<!-- 부트스트랩5 -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- JQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </head>
 <body>
 	<div class="container p-5 my-5 border">
@@ -66,5 +68,20 @@
 			</c:forEach>
 		</table>
 	</div>
+	
+	<!-- JQuery 코드 시작 -->
+	<script>
+		// 메세지창 띄우기
+		$(document).ready(function() {
+            let urlParams = new URLSearchParams(window.location.search);
+            // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
+            // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
+            let successParam = urlParams.get('success');
+            // urlParams.get() -> 매개변수가 키인 값을 반환
+            if (successParam == 'true') {
+                alert('내역이 추가되었습니다');
+            }
+        });
+	</script>
 </body>
 </html>

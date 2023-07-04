@@ -49,6 +49,18 @@
 	
 	<!-- JQuery 코드 시작 -->
 	<script>
+		// 메세지창 띄우기
+		$(document).ready(function() {
+	        let urlParams = new URLSearchParams(window.location.search);
+	        // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
+	        // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
+	        let successParam = urlParams.get('success');
+	        // urlParams.get() -> 매개변수가 키인 값을 반환
+	        if (successParam == 'false') {
+	            alert('회원가입에 실패하였습니다 다시 시도해주세요');
+	        }
+	    });
+	
 		// 회원가입 활성화 검사 변수 선언
 		let idChk = 0;
 		let pwChk = 0;

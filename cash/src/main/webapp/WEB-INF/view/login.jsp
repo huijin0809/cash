@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,15 +23,15 @@
 				<tr>
 					<th>아이디</th>
 					<td>
-						<input type="text" name="memberId" class="form-control">
+						<input type="text" name="memberId" id="memberId" class="form-control">
 					</td>
 				</tr>
 				<tr>
 					<th>비밀번호</th>
-					<td><input type="password" name="memberPw" class="form-control"></td>
+					<td><input type="password" name="memberPw" id="memberPw" class="form-control"></td>
 				</tr>
 			</table> <br>
-			<button type="submit" class="btn btn-dark btn-sm">로그인</button>
+			<button type="submit" id="submitBtn" class="btn btn-dark btn-sm">로그인</button>
 			<a href="${pageContext.request.contextPath}/addMember" class="btn btn-outline-dark btn-sm">회원가입</a>
 			<!-- a태그로 값을 보내면 get방식 -->
 		</form>
@@ -41,13 +40,35 @@
 	<!-- JQuery 코드 시작 -->
 	<script>
 		// 메세지창 띄우기
-		let success = ${success};
-		
 		$(document).ready(function() {
-			if(success == "true") {
-				alert("회원가입이 완료되었습니다");
+            let urlParams = new URLSearchParams(window.location.search);
+            // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
+            // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
+            let successParam = urlParams.get('success');
+            // urlParams.get() -> 매개변수가 키인 값을 반환
+            if (successParam == 'true') {
+                alert('회원가입 되었습니다');
+            } else if(successParam == 'delTrue') {
+            	alert('탈퇴 되었습니다');
+            } else if(successParam == 'loginFalse') {
+            	alert('아이디 또는 비밀번호가 일치하지 않습니다');
+            } else if(successParam == 'logout') {
+            	alert('로그아웃 되었습니다');
+            }
+        });
+		
+		// 공백 검사
+		$('#submitBtn').click(function(event) {
+			if($('#memberId').val() == '') {
+				alert("아이디를 입력해주세요");
+				event.preventDefault(); // form 제출 막기
+				return;
+			} else if($('#memberPw').val() == '') {
+				alert("비밀번호를 입력해주세요");
+				event.preventDefault(); // form 제출 막기
+				return;
 			}
-		});
+		}); 
 	</script>
 </body>
 </html>

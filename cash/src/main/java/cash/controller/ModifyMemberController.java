@@ -56,10 +56,10 @@ public class ModifyMemberController extends HttpServlet {
 		int row = memberDao.updateMemberOne(loginMemberId, member);
 		if(row == 0) { // 수정 실패
 			System.out.println("회원정보 수정 실패");
-			response.sendRedirect(request.getContextPath() + "/modifyMember");
+			response.sendRedirect(request.getContextPath() + "/modifyMember?success=false");
 		} else if(row == 1) { // 수정 성공
 			System.out.println("회원정보 수정 성공");
-			response.sendRedirect(request.getContextPath() + "/memberOne");
+			response.sendRedirect(request.getContextPath() + "/memberOne?success=true");
 		} else { // 그 외 에러 발생
 			System.out.println("modifyMember error!");
 		}

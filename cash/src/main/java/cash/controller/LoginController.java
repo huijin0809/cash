@@ -41,7 +41,7 @@ public class LoginController extends HttpServlet {
 		
 		if(loginMember == null) { // 로그인 실패시
 			System.out.println("로그인 실패");
-			response.sendRedirect(request.getContextPath() + "/login");
+			response.sendRedirect(request.getContextPath() + "/login?success=loginFalse");
 			return;
 		}
 		

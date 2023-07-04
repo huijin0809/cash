@@ -50,7 +50,7 @@ public class AddMemberController extends HttpServlet {
 		if(row == 0) { // 회원가입 실패
 			// addMember.jsp view를 이동하는 controller를 리다이렉트
 			System.out.println("회원가입 실패");
-			response.sendRedirect(request.getContextPath() + "/addMember");
+			response.sendRedirect(request.getContextPath() + "/addMember?success=false");
 		} else if(row == 1) { // 회원가입 성공
 			// login.jsp view를 이동하는 controller를 리다이렉트
 			System.out.println("회원가입 성공");
