@@ -2,7 +2,7 @@ package cash.vo;
 
 public class Cashbook {
 	private int cashbookNo;
-	private String member_id;
+	private String memberId;
 	private String category;
 	private String cashbookDate;
 	private int price;
@@ -15,11 +15,11 @@ public class Cashbook {
 		super();
 	}
 
-	public Cashbook(int cashbookNo, String member_id, String category, String cashbookDate, int price, String memo,
+	public Cashbook(int cashbookNo, String memberId, String category, String cashbookDate, int price, String memo,
 			String updatedate, String createdate) {
 		super();
 		this.cashbookNo = cashbookNo;
-		this.member_id = member_id;
+		this.memberId = memberId;
 		this.category = category;
 		this.cashbookDate = cashbookDate;
 		this.price = price;
@@ -36,12 +36,12 @@ public class Cashbook {
 		this.cashbookNo = cashbookNo;
 	}
 
-	public String getMember_id() {
-		return member_id;
+	public String getMemberId() {
+		return memberId;
 	}
 
-	public void setMember_id(String member_id) {
-		this.member_id = member_id;
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
 	public String getCategory() {
@@ -94,7 +94,7 @@ public class Cashbook {
 
 	@Override
 	public String toString() {
-		return "Cashbook [cashbookNo=" + cashbookNo + ", member_id=" + member_id + ", category=" + category
+		return "Cashbook [cashbookNo=" + cashbookNo + ", memberId=" + memberId + ", category=" + category
 				+ ", cashbookDate=" + cashbookDate + ", price=" + price + ", memo=" + memo + ", updatedate="
 				+ updatedate + ", createdate=" + createdate + "]";
 	}
