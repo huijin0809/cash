@@ -26,7 +26,7 @@
 				<input type="hidden" name="memberId" value="${memberId}">
 				<input type="hidden" name="cashbookDate" value="${cashbookDate}">
 				<select name="category" onchange="this.form.submit()">
-					<option value="" <c:if test="${category == ''}"> selected </c:if>>==전체==</option>
+					<option value="" <c:if test="${category == ''}"> selected </c:if>>전체</option>
 					<option value="수입" <c:if test="${category == '수입'}"> selected </c:if>>수입</option>
 					<option value="지출" <c:if test="${category == '지출'}"> selected </c:if>>지출</option>
 				</select>
@@ -42,31 +42,47 @@
 			<a href="${pageContext.request.contextPath}/calendar" class="btn btn-dark btn-sm">달력보기</a>
 			<a href="${pageContext.request.contextPath}/addCashbook?cashbookDate=${cashbookDate}" class="btn btn-outline-dark btn-sm">내역추가</a>
 		</div>
-		<table class="table">
-			<tr>
-				<th>category</th>
-				<th>price</th>
-				<th>memo</th>
-				<th>updatedate</th>
-				<th>createdate</th>
-			</tr>
-			<c:forEach var="c" items="${list}">
+		<form action="${pageContext.request.contextPath}/removeCashbook" method="post">
+		<input type="hidden" name="cashbookDate" value="${cashbookDate}">
+			<table class="table">
 				<tr>
-					<td>${c.category}</td>
-					<td>
-						<c:if test="${c.category == '수입'}">
-							<span style="color:green">+${c.price}</span>
-						</c:if>
-						<c:if test="${c.category == '지출'}">
-							<span style="color:orange">-${c.price}</span>
-						</c:if>
-					</td>
-					<td>${c.memo}</td>
-					<td>${c.updatedate}</td>
-					<td>${c.createdate}</td>
+					<th>
+						<input type="checkbox" id="chkAll">
+					</th>
+					<th>category</th>
+					<th>price</th>
+					<th>memo</th>
+					<th>updatedate</th>
+					<th>createdate</th>
+					<th>수정</th>
 				</tr>
-			</c:forEach>
-		</table>
+				<c:forEach var="c" items="${list}">
+					<tr>
+						<td>
+							<input type="checkbox" name="cashbookNo" value="${c.cashbookNo}">
+						</td>
+						<td>${c.category}</td>
+						<td>
+							<c:if test="${c.category == '수입'}">
+								<span style="color:green">+${c.price}</span>
+							</c:if>
+							<c:if test="${c.category == '지출'}">
+								<span style="color:orange">-${c.price}</span>
+							</c:if>
+						</td>
+						<td>${c.memo}</td>
+						<td>${c.updatedate}</td>
+						<td>${c.createdate}</td>
+						<td>
+							<a href="${pageContext.request.contextPath}/modifyCashbook?cashbookNo=${c.cashbookNo}" class="btn btn-outline-dark btn-sm">
+								수정
+							</a>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+			<button type="submit" id="delBtn" class="btn btn-danger btn-sm">삭제</button>
+		</form>
 		
 		<!-- 페이지 네비게이션 -->
 		<div>
@@ -121,15 +137,55 @@
 	<script>
 		// 메세지창 띄우기
 		$(document).ready(function() {
-            let urlParams = new URLSearchParams(window.location.search);
-            // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
-            // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
-            let successParam = urlParams.get('success');
-            // urlParams.get() -> 매개변수가 키인 값을 반환
-            if (successParam == 'true') {
-                alert('내역이 추가되었습니다');
-            }
-        });
+	        let urlParams = new URLSearchParams(window.location.search);
+	        // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
+	        // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
+	        let msgParam = urlParams.get('msg');
+	        // urlParams.get() -> 매개변수가 키인 값을 반환
+	        if (msgParam != null) {
+	            alert(msgParam);
+	        }
+	    });
+		
+		// 체크박스 전체선택/해제
+		let chkList = $('input[name=cashbookNo]'); // 체크박스 버튼
+		let chkAll = $('#chkAll'); // 전체선택박스 버튼
+		let total = chkList.length; // 체크박스 전체 수
+		let checked = 0; // 선택된 체크박스 수
+		
+		chkAll.click(function() { // 전체선택박스 버튼 클릭시
+			if(chkAll.is(":checked")) { // is(":checked") -> 체크되어있으면 true 반환
+				chkList.prop("checked", true); // prop("checked") -> 마찬가지로 체크되어있으면 true 반환 // 대신 prop는 값을 바꿀 수도 있다
+			} else {
+				chkList.prop("checked", false);
+			}
+			checked = chkList.filter(":checked").length; // filter(":checked") -> 체크되어있는 체크박스만 필터링해준다
+			// console.log(checked + "<- checked");
+		});
+
+		chkList.click(function() { // 체크박스 버튼 클릭시
+			if(total == checked) { // 선택된 체크박스 수가 체크박스 전체 수와 같다면
+				chkAll.prop("checked", true); // 전체선택박스도 체크
+			} else {
+				chkAll.prop("checked", false);
+			}
+			checked = chkList.filter(":checked").length;
+			// console.log(checked + "<- checked");
+		});
+		
+		// 삭제 버튼 유효성 검사
+		$('#delBtn').click(function(event) {
+			if(checked == 0) { // 체크박스가 하나도 선택되지 않았을 경우
+				alert("삭제할 내역을 선택해주세요");
+				event.preventDefault(); // form 제출 막기
+				return;
+			}
+			let result = confirm('정말 삭제하시겠습니까?'); // 확인(true) or 취소(false) 반환
+			if(result == false) {
+				event.preventDefault(); // form 제출 막기
+				return;
+			}
+		});
 	</script>
 </body>
 </html>

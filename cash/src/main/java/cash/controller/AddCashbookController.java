@@ -1,6 +1,8 @@
 package cash.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -56,12 +58,14 @@ public class AddCashbookController extends HttpServlet {
 		Cashbook cashbook = new Cashbook(0, memberId, category, cashbookDate, price, memo, null, null);
 		
 		// 모델값 구하기
+		String msg = null;
 		// 1. Cashbook 입력 DAO 호출
 		CashbookDao cashbookDao = new CashbookDao();
 		int cashbookNo = cashbookDao.insertCashbook(cashbook); // insert 후 키값 저장
 		if(cashbookNo == 0) { // 입력 실패시
 			System.out.println("cashbook insert 실패! <- AddCashbookController");
-			response.sendRedirect(request.getContextPath() + "/addCashbook?cashbookDate=" + cashbookDate + "&success=false");
+			msg = URLEncoder.encode("내역이 추가되지 않았습니다 다시 시도해주세요", "utf-8");
+			response.sendRedirect(request.getContextPath() + "/addCashbook?cashbookDate=" + cashbookDate + "&msg=" + msg);
 			return;
 		}
 		System.out.println("cashbook insert 성공! <- AddCashbookController");
@@ -90,8 +94,8 @@ public class AddCashbookController extends HttpServlet {
 		}
 		
 		// 모든 작업 완료 후 상세 페이지로 이동
-		response.sendRedirect(request.getContextPath() + "/calendarOne?cashbookDate=" + cashbookDate + "&success=true");
-		// 추가 완료 메세지를 띄어주기 위해 success값 같이 보내기
+		msg = URLEncoder.encode("내역이 추가되었습니다", "utf-8");
+		response.sendRedirect(request.getContextPath() + "/calendarOne?cashbookDate=" + cashbookDate + "&msg=" + msg);
 	}
 
 }

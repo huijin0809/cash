@@ -60,10 +60,10 @@
 	        let urlParams = new URLSearchParams(window.location.search);
 	        // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
 	        // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
-	        let successParam = urlParams.get('success');
+	        let msgParam = urlParams.get('msg');
 	        // urlParams.get() -> 매개변수가 키인 값을 반환
-	        if (successParam == 'false') {
-	            alert('내역이 추가되지 않았습니다 다시 시도해주세요');
+	        if (msgParam != null) {
+	            alert(msgParam);
 	        }
 	    });
 		// 공백 검사

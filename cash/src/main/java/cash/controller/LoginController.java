@@ -1,6 +1,8 @@
 package cash.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,10 +40,11 @@ public class LoginController extends HttpServlet {
 		// 모델값 구하기 (DAO 메소드 호출)
 		MemberDao memberDao = new MemberDao();
 		Member loginMember = memberDao.selectMemberById(member);
-		
+		String msg = null;
 		if(loginMember == null) { // 로그인 실패시
 			System.out.println("로그인 실패");
-			response.sendRedirect(request.getContextPath() + "/login?success=loginFalse");
+			msg = URLEncoder.encode("아이디 또는 비밀번호가 일치하지 않습니다", "utf-8");
+			response.sendRedirect(request.getContextPath() + "/login?msg=" + msg);
 			return;
 		}
 		

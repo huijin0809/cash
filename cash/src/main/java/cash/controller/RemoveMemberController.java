@@ -1,6 +1,8 @@
 package cash.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,15 +45,18 @@ public class RemoveMemberController extends HttpServlet {
 		
 		// 모델값 구하기 (DAO 메소드 호출)
 		MemberDao memberDao = new MemberDao();
+		String msg = null;
 		int row = memberDao.deleteMemberOne(loginMemberId, inputMemberPw);
 		
 		if(row == 0) { // 탈퇴 실패
 			System.out.println("회원탈퇴 실패");
-			response.sendRedirect(request.getContextPath() + "/removeMember?success=false");
+			msg = URLEncoder.encode("비밀번호가 일치하지 않습니다", "utf-8");
+			response.sendRedirect(request.getContextPath() + "/removeMember?msg=" + msg);
 		} else if(row == 1) { // 탈퇴 성공
 			System.out.println("회원탈퇴 성공");
+			msg = URLEncoder.encode("탈퇴 되었습니다", "utf-8");
 			session.invalidate(); // 세션값 초기화
-			response.sendRedirect(request.getContextPath() + "/login?success=delTrue");
+			response.sendRedirect(request.getContextPath() + "/login?msg=" + msg);
 		} else { // 그 외 에러 발생
 			System.out.println("removeMember error!");
 		}

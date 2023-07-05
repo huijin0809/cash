@@ -1,6 +1,8 @@
 package cash.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -53,13 +55,16 @@ public class ModifyMemberController extends HttpServlet {
 		
 		// 회원정보 수정 DAO 호출
 		MemberDao memberDao = new MemberDao();
+		String msg = null;
 		int row = memberDao.updateMemberOne(loginMemberId, member);
 		if(row == 0) { // 수정 실패
 			System.out.println("회원정보 수정 실패");
-			response.sendRedirect(request.getContextPath() + "/modifyMember?success=false");
+			msg = URLEncoder.encode("회원정보가 수정되지 않았습니다", "utf-8");
+			response.sendRedirect(request.getContextPath() + "/modifyMember?msg=" + msg);
 		} else if(row == 1) { // 수정 성공
 			System.out.println("회원정보 수정 성공");
-			response.sendRedirect(request.getContextPath() + "/memberOne?success=true");
+			msg = URLEncoder.encode("회원정보가 수정되었습니다", "utf-8");
+			response.sendRedirect(request.getContextPath() + "/memberOne?msg=" + msg);
 		} else { // 그 외 에러 발생
 			System.out.println("modifyMember error!");
 		}

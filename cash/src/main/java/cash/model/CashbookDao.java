@@ -324,4 +324,46 @@ public class CashbookDao {
 		
 		return cashbookNo;
 	}
+	
+	// 가계부 삭제
+	public int deleteCashbook(int[] intChkCashbookNo) {
+		int row = 0;
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String driver = "org.mariadb.jdbc.Driver";
+		String url = "jdbc:mariadb://127.0.0.1:3306/cash";
+		String dbid = "root";
+		String dbpw = "java1234";
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url,dbid,dbpw);
+			
+			String sql = "DELETE FROM cashbook WHERE cashbook_no IN(?"; // 기본쿼리는 물음표 1개를 넣고 시작
+			// 쿼리에 물음표가 몇개 들어갈지 셋팅
+			for(int i=1; i<intChkCashbookNo.length; i++) {
+				sql += ",?";
+			}
+			sql += ")"; // length만큼 물음표가 출력되고 마지막에 괄호 닫기
+			stmt = conn.prepareStatement(sql);
+			// 물음표에 들어갈 값 넣기
+			for(int i=0; i<intChkCashbookNo.length; i++) {
+				stmt.setInt(i+1, intChkCashbookNo[i]);
+				// 첫번째 물음표(i+1)에 배열의 값(인덱스 0부터) 순서대로 넣어주기
+			}
+			row = stmt.executeUpdate();
+		} catch(Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return row;
+	}
 }

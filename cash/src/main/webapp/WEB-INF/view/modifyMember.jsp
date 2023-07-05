@@ -65,15 +65,15 @@
 		
 		// 메세지창 띄우기
 		$(document).ready(function() {
-            let urlParams = new URLSearchParams(window.location.search);
-            // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
-            // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
-            let successParam = urlParams.get('success');
-            // urlParams.get() -> 매개변수가 키인 값을 반환
-            if (successParam == 'false') {
-                alert('회원정보가 수정되지 않았습니다');
-            }
-        });
+	        let urlParams = new URLSearchParams(window.location.search);
+	        // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
+	        // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
+	        let msgParam = urlParams.get('msg');
+	        // urlParams.get() -> 매개변수가 키인 값을 반환
+	        if (msgParam != null) {
+	            alert(msgParam);
+	        }
+	    });
 		
 		// pw 일치 확인
 		$('#memberPw_2').on('input',function() { // 해당 id의 input태그에 값이 입력될때마다 이벤트 발생

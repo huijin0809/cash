@@ -36,10 +36,10 @@
 	        let urlParams = new URLSearchParams(window.location.search);
 	        // URLSearchParams() -> URL에서 쿼리 문자열을 다룰 수 있는 메서드
 	        // 쿼리 문자열? -> URL에서 ?키:값으로 이루어진 부분 -> success=ture
-	        let successParam = urlParams.get('success');
+	        let msgParam = urlParams.get('msg');
 	        // urlParams.get() -> 매개변수가 키인 값을 반환
-	        if (successParam == 'false') {
-	            alert('비밀번호가 일치하지 않습니다');
+	        if (msgParam != null) {
+	            alert(msgParam);
 	        }
 	    });
 		
