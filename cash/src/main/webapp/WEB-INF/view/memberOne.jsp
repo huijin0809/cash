@@ -1,21 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import = "cash.vo.*" %>
-<%
-	Member member = (Member)request.getAttribute("member");
-	String memberId = member.getMemberId();
-	String memberPw = member.getMemberPw();
-	String updatedate = member.getUpdatedate();
-	String createdate = member.getCreatedate();
-	
-	// 비밀번호 앞 두자리만 보여주고 나머지 가려서 출력하기
-	int memberPwLength = memberPw.length(); // 비밀번호 총 길이 추출
-	String memberPw_1 = memberPw.substring(0,2); // 앞 두자리 추출
-	String memberPw_2 = "";
-	for(int i=0; i < memberPwLength-2; i++) { // 비밀번호 나머지 뒷자리 만큼 * 생성
-		memberPw_2 += "*";
-	}
-	String printMemberPw = memberPw_1 + memberPw_2;
-%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,19 +22,19 @@
 		<table class="table">
 			<tr>
 				<th>아이디</th>
-				<td><%=memberId%></td>
+				<td>${member.memberId}</td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>
-				<td><%=printMemberPw%></td>
+				<td>${member.memberPw}</td>
 			</tr>
 			<tr>
 				<th>마지막 수정일</th>
-				<td><%=updatedate%></td>
+				<td>${member.updatedate}</td>
 			</tr>
 			<tr>
 				<th>최초 가입일</th>
-				<td><%=createdate%></td>
+				<td>${member.createdate}</td>
 			</tr>
 		</table> <br>
 		<a href="${pageContext.request.contextPath}/cashbook" class="btn btn-outline-dark btn-sm">뒤로</a>

@@ -55,7 +55,7 @@ public class CalendarOneController extends HttpServlet {
 				
 		// list 출력 DAO 호출
 		CashbookDao cashbookDao = new CashbookDao();
-		List<Cashbook> list = cashbookDao.selectCashbookOne(memberId, cashbookDate, category, orderBy, beginRow, rowPerPage);
+		List<Cashbook> list = cashbookDao.selectCashbookListByDate(memberId, cashbookDate, category, orderBy, beginRow, rowPerPage);
 		
 		// 페이징 알고리즘
 		int pagePerPage = 5;

@@ -1,12 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import = "cash.vo.*" %>
-<%
-	Member member = (Member)request.getAttribute("member");
-	String memberId = member.getMemberId();
-	String memberPw = member.getMemberPw();
-	String updatedate = member.getUpdatedate();
-	String createdate = member.getCreatedate();
-%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +24,7 @@
 			<table class="table">
 				<tr>
 					<th>아이디</th>
-					<td><%=memberId%></td> <!-- 수정 불가 -->
+					<td>${member.memberId}</td> <!-- 수정 불가 -->
 				</tr>
 				<tr>
 					<th>비밀번호</th>
@@ -46,11 +39,11 @@
 				</tr>
 				<tr>
 					<th>마지막 수정일</th>
-					<td><%=updatedate%></td> <!-- 수정 불가 -->
+					<td>${member.updatedate}</td> <!-- 수정 불가 -->
 				</tr>
 				<tr>
 					<th>최초 가입일</th>
-					<td><%=createdate%></td> <!-- 수정 불가 -->
+					<td>${member.createdate}</td> <!-- 수정 불가 -->
 				</tr>
 			</table> <br>
 			<a href="${pageContext.request.contextPath}/memberOne" class="btn btn-outline-dark btn-sm">뒤로</a>

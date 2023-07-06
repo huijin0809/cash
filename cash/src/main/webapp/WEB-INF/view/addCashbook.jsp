@@ -49,7 +49,7 @@
 				</tr>
 			</table> <br>
 			<a href="${pageContext.request.contextPath}/calendar" class="btn btn-danger btn-sm">취소</a>
-			<button type="submit" class="btn btn-dark btn-sm" id="addBtn">추가</button>
+			<button type="submit" class="btn btn-dark btn-sm" id="btn">추가</button>
 		</form>
 	</div>
 	
@@ -67,7 +67,7 @@
 	        }
 	    });
 		// 공백 검사
-		$('#addBtn').click(function(event) {
+		$('btn').click(function(event) {
 			// 입력값 변수에 저장
 			let cashbookDate = $('#cashbookDate').val();
 			let category = $('input[name="category"]:checked').val();

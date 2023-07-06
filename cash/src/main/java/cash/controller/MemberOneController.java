@@ -26,6 +26,17 @@ public class MemberOneController extends HttpServlet {
 		// 모델 값 구하기 (DAO의 메소드 호출)
 		MemberDao memberDao = new MemberDao();
 		Member member = memberDao.selectMemberOne(loginMember.getMemberId());
+		
+		// 비밀번호 앞 두자리만 보여주고 나머지 가려서 출력하기
+		int memberPwLength = member.getMemberPw().length(); // 비밀번호 총 길이 추출
+		String memberPw_1 = member.getMemberPw().substring(0,2); // 앞 두자리 추출
+		String memberPw_2 = "";
+		for(int i=0; i < memberPwLength-2; i++) { // 비밀번호 나머지 뒷자리 만큼 * 생성
+			memberPw_2 += "*";
+		}
+		String printMemberPw = memberPw_1 + memberPw_2;
+		member.setMemberPw(printMemberPw);
+		
 		// member 출력하는 (포워딩 대상) memberOne.jsp에도 공유되어야 한다
 		// request가 공유되니까 request안에 넣어서 공유!
 		request.setAttribute("member", member);
