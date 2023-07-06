@@ -141,7 +141,7 @@ public class CashbookDao {
 	}
 	
 	// 해당 날짜의 지출/수입 리스트
-	public List<Cashbook> selectCashbookOne(String memberId, String cashbookDate, String category, String orderBy, int beginRow, int rowPerPage) {
+	public List<Cashbook> selectCashbookListByDate(String memberId, String cashbookDate, String category, String orderBy, int beginRow, int rowPerPage) {
 		List<Cashbook> list = new ArrayList<Cashbook>();
 		Cashbook c = null;
 		
@@ -281,6 +281,52 @@ public class CashbookDao {
 		return totalRow;
 	}
 	
+	// cashbook 1개 상세보기
+	public Cashbook selectCashbookOne(int cashbookNo) {
+		Cashbook cashbook = null;
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String driver = "org.mariadb.jdbc.Driver";
+		String url = "jdbc:mariadb://127.0.0.1:3306/cash";
+		String dbid = "root";
+		String dbpw = "java1234";
+		String sql = "SELECT cashbook_no cashbookNo, category, cashbook_date cashbookDate, price, memo, updatedate, createdate FROM cashbook WHERE cashbook_no = ?";
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url,dbid,dbpw);
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, cashbookNo);
+			rs = stmt.executeQuery();
+			// System.out.println(stmt);
+			if(rs.next()) {
+				cashbook = new Cashbook();
+				cashbook.setCashbookNo(rs.getInt("cashbookNo"));
+				cashbook.setCategory(rs.getString("category"));
+				cashbook.setCashbookDate(rs.getString("cashbookDate"));
+				cashbook.setPrice(rs.getInt("price"));
+				cashbook.setMemo(rs.getString("memo"));
+				cashbook.setUpdatedate(rs.getString("updatedate"));
+				cashbook.setCreatedate(rs.getString("createdate"));
+			}
+		} catch(Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				stmt.close();
+				conn.close();
+			} catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return cashbook;
+	}
+	
+	
 	// 가계부 입력 -> 반환값 : cashbook_no 키값
 	public int insertCashbook(Cashbook cashbook) {
 		int cashbookNo = 0;
@@ -323,6 +369,42 @@ public class CashbookDao {
 		}
 		
 		return cashbookNo;
+	}
+	
+	// 가계부 수정
+	public int updateCashbook(Cashbook cashbook) {
+		int row = 0;
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String driver = "org.mariadb.jdbc.Driver";
+		String url = "jdbc:mariadb://127.0.0.1:3306/cash";
+		String dbid = "root";
+		String dbpw = "java1234";
+		String sql = "UPDATE cashbook SET category = ?, cashbook_date = ?, price = ?, memo = ?, updatedate = NOW() WHERE cashbook_no = ?";
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url,dbid,dbpw);
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, cashbook.getCategory());
+			stmt.setString(2, cashbook.getCashbookDate());
+			stmt.setInt(3, cashbook.getPrice());
+			stmt.setString(4, cashbook.getMemo());
+			stmt.setInt(5, cashbook.getCashbookNo());
+			row = stmt.executeUpdate();
+		} catch(Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return row;
 	}
 	
 	// 가계부 삭제

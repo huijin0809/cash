@@ -7,40 +7,7 @@ import java.sql.ResultSet;
 import java.util.*;
 import cash.vo.*;
 
-public class HashtagDao {
-	// 해시태그 입력
-	public int insertHashtag(Hashtag hashtag) {
-		int row = 0;
-		
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		String driver = "org.mariadb.jdbc.Driver";
-		String url = "jdbc:mariadb://127.0.0.1:3306/cash";
-		String dbid = "root";
-		String dbpw = "java1234";
-		String sql = "INSERT INTO hashtag(cashbook_no, word, updatedate, createdate) VALUES(?,?,NOW(),NOW())";
-		
-		try {
-			Class.forName(driver);
-			conn = DriverManager.getConnection(url,dbid,dbpw);
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, hashtag.getCashbookno());
-			stmt.setString(2, hashtag.getWord());
-			row = stmt.executeUpdate();
-		} catch(Exception e1) {
-			e1.printStackTrace();
-		} finally {
-			try {
-				stmt.close();
-				conn.close();
-			} catch(Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-		
-		return row;
-	}
-	
+public class HashtagDao {	
 	// 해당 월의 해시태그 리스트 조회
 	public List<Map<String, Object>> selectWordCountByMonth(String memberId, int targetYear, int targetMonth) {
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -82,4 +49,70 @@ public class HashtagDao {
 		
 		return list;
 	}
+	
+	// 해시태그 입력
+	public int insertHashtag(Hashtag hashtag) {
+		int row = 0;
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String driver = "org.mariadb.jdbc.Driver";
+		String url = "jdbc:mariadb://127.0.0.1:3306/cash";
+		String dbid = "root";
+		String dbpw = "java1234";
+		String sql = "INSERT INTO hashtag(cashbook_no, word, updatedate, createdate) VALUES(?,?,NOW(),NOW())";
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url,dbid,dbpw);
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, hashtag.getCashbookno());
+			stmt.setString(2, hashtag.getWord());
+			row = stmt.executeUpdate();
+		} catch(Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return row;
+	}
+		
+	// 해시태그 삭제
+	public int deleteHashtag(int cashbookNo) {
+		int row = 0;
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String driver = "org.mariadb.jdbc.Driver";
+		String url = "jdbc:mariadb://127.0.0.1:3306/cash";
+		String dbid = "root";
+		String dbpw = "java1234";
+		String sql = "DELETE FROM hashtag WHERE cashbook_no = ?";
+		
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url,dbid,dbpw);
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, cashbookNo);
+			row = stmt.executeUpdate();
+		} catch(Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return row;
+	}
+		
 }
