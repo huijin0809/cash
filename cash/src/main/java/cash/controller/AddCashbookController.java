@@ -45,8 +45,6 @@ public class AddCashbookController extends HttpServlet {
 
 	// 입력 액션 cashbook (+ hashtag)
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 한글 깨지지 않게 인코딩
-		request.setCharacterEncoding("utf-8");
 		
 		// request 매개값 받기
 		String memberId = request.getParameter("memberId");

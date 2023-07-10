@@ -31,9 +31,15 @@
 					<td><input type="password" name="memberPw" id="memberPw" class="form-control"></td>
 				</tr>
 			</table> <br>
-			<button type="submit" id="submitBtn" class="btn btn-dark btn-sm">로그인</button>
-			<a href="${pageContext.request.contextPath}/addMember" class="btn btn-outline-dark btn-sm">회원가입</a>
-			<!-- a태그로 값을 보내면 get방식 -->
+			<div>
+				<input type="checkbox" name="idSave" value="y">ID저장
+				<!-- 쿠키 관련 메소드를 이용한 id저장 기능 구현 예정... -->
+			</div>
+			<div>
+				<button type="submit" id="submitBtn" class="btn btn-dark btn-sm">로그인</button>
+				<a href="${pageContext.request.contextPath}/addMember" class="btn btn-outline-dark btn-sm">회원가입</a>
+				<!-- a태그로 값을 보내면 get방식 -->
+			</div>
 		</form>
 	</div>
 	

@@ -50,8 +50,6 @@ public class ModifyCashbookController extends HttpServlet {
 	// 가계부 수정 액션
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 한글 깨지지 않게 인코딩
-		request.setCharacterEncoding("utf-8");
 		
 		// request 매개값 받아서 객체에 저장
 		int cashbookNo = Integer.parseInt(request.getParameter("cashbookNo"));
