@@ -148,9 +148,10 @@
 	    });
 		
 		// 체크박스 전체선택/해제
-		let chkList = $('input[name=cashbookNo]'); // 체크박스 버튼
 		let chkAll = $('#chkAll'); // 전체선택박스 버튼
+		let chkList = $('input[name=cashbookNo]'); // 체크박스 버튼
 		let total = chkList.length; // 체크박스 전체 수
+		// console.log(total + "<- total");
 		let checked = 0; // 선택된 체크박스 수
 		
 		chkAll.click(function() { // 전체선택박스 버튼 클릭시
@@ -164,12 +165,12 @@
 		});
 
 		chkList.click(function() { // 체크박스 버튼 클릭시
+			checked = chkList.filter(":checked").length;
 			if(total == checked) { // 선택된 체크박스 수가 체크박스 전체 수와 같다면
 				chkAll.prop("checked", true); // 전체선택박스도 체크
 			} else {
 				chkAll.prop("checked", false);
 			}
-			checked = chkList.filter(":checked").length;
 			// console.log(checked + "<- checked");
 		});
 		
