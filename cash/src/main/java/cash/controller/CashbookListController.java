@@ -28,14 +28,26 @@ public class CashbookListController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/calendar");
 			return;
 		}
+		String word = request.getParameter("word");
+				
+		// beginDate, endDate 유효성 검사
+		String beginDate = "";
+		String endDate = "";
+		if(request.getParameter("beginDate") != null) {
+			beginDate = request.getParameter("beginDate");
+		}
+		if(request.getParameter("endDate") != null) {
+			endDate = request.getParameter("endDate");
+		}
 		
 		// 세션 정보에서 아이디값 가져오기
 		Member loginMember = (Member)(session.getAttribute("loginMember"));
 		String memberId = loginMember.getMemberId();
-		// request 값 받기
-		String word = request.getParameter("word");
+		
 		// System.out.println(memberId);
 		// System.out.println(word);
+		System.out.println(beginDate);
+		System.out.println(endDate);
 		
 		// 페이징에 필요한 변수값 가져오기
 		int currentPage = 1;
@@ -50,7 +62,7 @@ public class CashbookListController extends HttpServlet {
 		
 		// list 출력 DAO 호출
 		CashbookDao cashbookDao = new CashbookDao();
-		List<Cashbook> list = cashbookDao.selectCashbookListByTag(memberId, word, beginRow, rowPerPage);
+		List<Cashbook> list = cashbookDao.selectCashbookListByTag(memberId, word, beginDate, endDate, beginRow, rowPerPage);
 		
 		// 페이징 알고리즘
 		int pagePerPage = 5;
@@ -68,6 +80,8 @@ public class CashbookListController extends HttpServlet {
 		// view로 값 보내기
 		request.setAttribute("memberId", memberId);
 		request.setAttribute("word", word);
+		request.setAttribute("beginDate", beginDate);
+		request.setAttribute("endDate", endDate);
 		request.setAttribute("list", list);
 		request.setAttribute("rowPerPage", rowPerPage);
 		request.setAttribute("beginPage", beginPage);

@@ -51,7 +51,7 @@ public class CashbookDao {
 	}
 	
 	// 해당 해시태그의 cashbook 리스트 조회
-	public List<Cashbook> selectCashbookListByTag(String memberId, String word, int beginRow, int rowPerPage) {
+	public List<Cashbook> selectCashbookListByTag(String memberId, String word, String beginDate, String endDate, int beginRow, int rowPerPage) {
 		List<Cashbook> list = new ArrayList<Cashbook>();
 		Cashbook c = null;
 		
@@ -62,7 +62,17 @@ public class CashbookDao {
 		String url = "jdbc:mariadb://127.0.0.1:3306/cash";
 		String dbid = "root";
 		String dbpw = "java1234";
-		String sql = "SELECT c.cashbook_no cashbookNo, c.member_id memberId, c.category category, c.cashbook_date cashbookDate, c.price price, c.memo memo, c.updatedate updatedate, c.createdate createdate FROM cashbook c INNER JOIN hashtag h ON c.cashbook_no = h.cashbook_no WHERE c.member_id = ? AND h.word = ? ORDER BY c.cashbook_date DESC LIMIT ?, ?";
+		String sql = "SELECT c.cashbook_no cashbookNo, c.member_id memberId, c.category category, c.cashbook_date cashbookDate, c.price price, c.memo memo, c.updatedate updatedate, c.createdate createdate, c.cashbook_date cashbookDate FROM cashbook c INNER JOIN hashtag h ON c.cashbook_no = h.cashbook_no WHERE c.member_id = ? AND h.word = ?";
+		// 매개값에 따라 다른 동적쿼리 작성
+		if(!beginDate.equals("") && endDate.equals("")) { // 시작날짜만 입력
+			sql += " AND c.cashbook_date > ?";
+		} else if(beginDate.equals("") && !endDate.equals("")) { // 끝날짜만 입력
+			sql += " AND c.cashbook_date < ?";
+		} else if(!beginDate.equals("") && !endDate.equals("")) { // 둘다 입력
+			sql += " AND c.cashbook_date BETWEEN ? AND ?";
+		}
+		// 정렬 부분 추가
+		sql += " ORDER BY c.cashbook_date DESC LIMIT ?, ?";
 		
 		try {
 			Class.forName(driver);
@@ -70,10 +80,23 @@ public class CashbookDao {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, memberId);
 			stmt.setString(2, word);
-			stmt.setInt(3, beginRow);
-			stmt.setInt(4, rowPerPage);
+			
+			int parameterIndex = 3; // 물음표 인덱스
+			// 동적으로 인덱스 셋팅
+			if(!beginDate.equals("") && endDate.equals("")) { // 시작날짜만 입력
+				stmt.setString(parameterIndex++, beginDate);
+			} else if(beginDate.equals("") && !endDate.equals("")) { // 끝날짜만 입력
+				stmt.setString(parameterIndex++, endDate);
+			} else if(!beginDate.equals("") && !endDate.equals("")) { // 둘다 입력
+				stmt.setString(parameterIndex++, beginDate);
+				stmt.setString(parameterIndex++, endDate);
+			}
+			stmt.setInt(parameterIndex++, beginRow);
+			stmt.setInt(parameterIndex++, rowPerPage);
+			
 			rs = stmt.executeQuery();
-			// System.out.println(stmt);
+			System.out.println(stmt);
+			
 			while(rs.next()) {
 				c = new Cashbook();
 				c.setCashbookNo(rs.getInt("cashbookNo"));
@@ -84,6 +107,7 @@ public class CashbookDao {
 				c.setMemo(rs.getString("memo"));
 				c.setUpdatedate(rs.getString("updatedate"));
 				c.setCreatedate(rs.getString("createdate"));
+				c.setCashbookDate(rs.getString("cashbookDate"));
 				list.add(c);
 			}
 		} catch(Exception e1) {

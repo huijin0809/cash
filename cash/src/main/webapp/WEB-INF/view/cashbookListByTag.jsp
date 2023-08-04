@@ -19,7 +19,12 @@
 	<div class="container">
 		<h3>${memberId}님의 #${word} 가계부 목록</h3>
 		<a href="${pageContext.request.contextPath}/calendar" class="btn btn-dark btn-sm">달력보기</a>
-		<!-- 정렬 기능 추가 예정.... -->
+		<!-- 정렬 기능 추가 -->
+		<form action="${pageContext.request.contextPath}/cashbookListByTag" method="get">
+			<input type="hidden" name="word" value="${word}">
+			<input type="date" name="beginDate" value="${beginDate}"> ~ <input type="date" name="endDate" value="${endDate}">
+			<button type="submit">검색</button>
+		</form>
 		<!-- rowPerPage 선택 기능 추가 예정... -->
 		<table class="table">
 			<tr>
@@ -28,6 +33,7 @@
 				<th>memo</th>
 				<th>updatedate</th>
 				<th>createdate</th>
+				<th>cashbookDate</th>
 			</tr>
 			<c:forEach var="c" items="${list}">
 				<tr>
@@ -43,6 +49,7 @@
 					<td>${c.memo}</td>
 					<td>${c.updatedate}</td>
 					<td>${c.createdate}</td>
+					<td>${c.cashbookDate}</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -53,7 +60,7 @@
             	<ul class="pagination justify-content-center">
             		<c:if test="${beginPage != 1}">
             			<li class="page-item">
-            				<a href="${pageContext.request.contextPath}/cashbookListByTag?currentPage=${beginPage - 1}&rowPerPage=${rowPerPage}&word=${word}" class="page-link">
+            				<a href="${pageContext.request.contextPath}/cashbookListByTag?currentPage=${beginPage - 1}&rowPerPage=${rowPerPage}&word=${word}&beginDate=${beginDate}&endDate=${endDate}" class="page-link">
             					&laquo; <!-- 이전 버튼 -->
             				</a>
             			</li>
@@ -67,7 +74,7 @@
             		<c:forEach var="i" begin="${beginPage}" end="${endPage}" step="1">
             			<c:if test="${i != currentPage}">
             				<li class="page-item">
-								<a href="${pageContext.request.contextPath}/cashbookListByTag?currentPage=${i}&rowPerPage=${rowPerPage}&word=${word}" class="page-link">
+								<a href="${pageContext.request.contextPath}/cashbookListByTag?currentPage=${i}&rowPerPage=${rowPerPage}&word=${word}&beginDate=${beginDate}&endDate=${endDate}" class="page-link">
 									${i}
 								</a>
 							</li>
